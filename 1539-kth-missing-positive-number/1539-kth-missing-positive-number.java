@@ -17,13 +17,7 @@ class Solution {
             }
             
         }
-       if(end==-1) {
-        int no1=k-(end+1);
-        return no1;
-       }
-        int no=nums[end]-(end+1);
-        k=k-no;
-        return nums[end]+k;
+       return end + k + 1;
 
     }
 }
