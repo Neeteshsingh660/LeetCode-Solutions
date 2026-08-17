@@ -28,7 +28,7 @@ class Solution {
         int left=Math.max(0,maxPathS(root.left,sum));
         int right=Math.max(0,maxPathS(root.right,sum));
         sum[0]=Math.max(sum[0],left+right+root.val);
-        return Math.max(left+root.val,root.val+right);
+        return root.val+Math.max(left,right);
                  
                  
     }
