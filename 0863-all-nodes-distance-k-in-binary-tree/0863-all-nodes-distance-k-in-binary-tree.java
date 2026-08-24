@@ -9,65 +9,85 @@
  */
 class Solution {
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-        HashMap<Integer,TreeNode> h=new HashMap<>();
-        Queue<TreeNode> q=new LinkedList<>();
-        q.add(root);
-        h.put(-1,root);
-        int p=0;
-        while(!q.isEmpty())
-        {
-            TreeNode pq=q.poll();
-            if(pq.left!=null)
-            {
-                q.add(pq.left);
-                h.put(pq.left.val,pq);
-            }
-            if(pq.right!=null)
-            {
-                q.add(pq.right);
-                h.put(pq.right.val,pq);
+
+        // Store parent of every node
+        HashMap<Integer, TreeNode> parentMap = new HashMap<>();
+
+        Queue<TreeNode> treeQueue = new LinkedList<>();
+        treeQueue.add(root);
+
+        while (!treeQueue.isEmpty()) {
+
+            TreeNode currentNode = treeQueue.poll();
+
+            if (currentNode.left != null) {
+                treeQueue.add(currentNode.left);
+                parentMap.put(currentNode.left.val, currentNode);
             }
 
+            if (currentNode.right != null) {
+                treeQueue.add(currentNode.right);
+                parentMap.put(currentNode.right.val, currentNode);
+            }
         }
-       // System.out.println(h);
-        HashMap<Integer,Integer> hash=new HashMap<>();
-        hash.put(target.val,1);
-        Queue<TreeNode> a=new LinkedList<>();
-        a.add(target);
-        while(p!=k)
-        {
-           int size=a.size();
-           for(int i=0;i<size;i++)
-           {
-            TreeNode l=a.poll();
-            if(l.left!=null&&!hash.containsKey(l.left.val))
-            {
-                a.add(l.left);
-                 hash.put(l.left.val,1);
 
-            }
-            if(l.right!=null&&!hash.containsKey(l.right.val))
-            {
-                a.add(l.right);
-                hash.put(l.right.val,1);
-            }
-            if(h.containsKey(l.val)&&!hash.containsKey(h.get(l.val).val))
-            {
-               
-                a.add(h.get(l.val));
-                hash.put(h.get(l.val).val,1);
-            }
-           } 
-           p++;
-        
-        }
-        ArrayList<Integer> m=new ArrayList<>();
-        while(!a.isEmpty())
-        {
-            m.add(a.poll().val);
-        }
-        System.out.println(m);
-        return m;
+        // Store visited nodes
+        HashMap<Integer, Integer> visited = new HashMap<>();
+        visited.put(target.val, 1);
 
+        // BFS starting from target
+        Queue<TreeNode> bfsQueue = new LinkedList<>();
+        bfsQueue.add(target);
+
+        int distance = 0;
+
+        while (distance < k) {
+
+            int size = bfsQueue.size();
+
+            for (int i = 0; i < size; i++) {
+
+                TreeNode currentNode = bfsQueue.poll();
+
+                // Move to left child
+                if (currentNode.left != null &&
+                    !visited.containsKey(currentNode.left.val)) {
+
+                    bfsQueue.add(currentNode.left);
+                    visited.put(currentNode.left.val, 1);
+                }
+
+                // Move to right child
+                if (currentNode.right != null &&
+                    !visited.containsKey(currentNode.right.val)) {
+
+                    bfsQueue.add(currentNode.right);
+                    visited.put(currentNode.right.val, 1);
+                }
+
+                // Move to parent
+                if (parentMap.containsKey(currentNode.val)) {
+
+                    TreeNode parentNode = parentMap.get(currentNode.val);
+
+                    if (!visited.containsKey(parentNode.val)) {
+
+                        bfsQueue.add(parentNode);
+                        visited.put(parentNode.val, 1);
+                    }
+                }
+            }
+
+            distance++;
+        }
+
+        // All nodes currently in the queue are at distance k
+        ArrayList<Integer> result = new ArrayList<>();
+
+        while (!bfsQueue.isEmpty()) {
+            result.add(bfsQueue.poll().val);
+        }
+
+        return result;
     }
 }
