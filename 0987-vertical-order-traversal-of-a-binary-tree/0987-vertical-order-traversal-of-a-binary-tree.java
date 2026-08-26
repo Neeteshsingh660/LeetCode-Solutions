@@ -67,9 +67,8 @@ class Solution {
                
                while(!p.isEmpty())
                {
-                  list.add(p.poll());
+                list.add(p.poll());
                }
-          
             }
              l.add(list);
         }
