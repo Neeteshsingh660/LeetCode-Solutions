@@ -30,10 +30,10 @@ class Solution {
             return null;
         }
         TreeNode a=new TreeNode(pre[ps]);
-        int indexOfIn=h.get(pre[ps]);
-        int numsleft=indexOfIn-is;
-       a.left= build(pre,ps+1,ps+numsleft,in,is,indexOfIn-1,h);
-       a.right=build(pre,ps+numsleft+1,pe,in,indexOfIn+1,ie,h);
+        int indexOfIn=h.get(a.val);
+        int mid=indexOfIn-is;
+       a.left= build(pre,ps+1,ps+mid,in,is,indexOfIn-1,h);
+       a.right=build(pre,ps+mid+1,pe,in,indexOfIn+1,ie,h);
        return a;
     }
 }
