@@ -29,7 +29,7 @@ class Solution {
     public int leftheight(TreeNode root)
     {
         TreeNode curr=root.left;
-        int c=1;
+        int c=1; //Start counting from that node only
         while(curr!=null)
         {
           c++;
@@ -40,7 +40,7 @@ class Solution {
     public int rightheight(TreeNode root)
     {
         TreeNode curr=root.right;
-        int c=1;
+        int c=1;    //Start counting from that node only
         while(curr!=null)
         {
           c++;
