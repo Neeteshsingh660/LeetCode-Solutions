@@ -1,78 +1,80 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
 class Solution {
     public int amountOfTime(TreeNode root, int start) {
-        HashMap<Integer,TreeNode> h=new HashMap<>();
-        Queue<TreeNode> q=new LinkedList<>();
-        TreeNode org=null;
-        q.add(root);
-        h.put(root.val,null);
-        while(!q.isEmpty())
-        {
-            TreeNode p=q.poll();
-            if(p.val==start)
-            {
-               org=p;
+
+        HashMap<Integer, TreeNode> parentMap = new HashMap<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+
+        TreeNode startNode = null;
+
+        queue.add(root);
+        parentMap.put(root.val, null);
+
+        // Create parent mapping
+        while (!queue.isEmpty()) {
+
+            TreeNode currentNode = queue.poll();
+
+            if (currentNode.val == start) {
+                startNode = currentNode;
             }
-            if(p.left!=null)
-            {
-               q.add(p.left);
-               h.put(p.left.val,p);
+
+            if (currentNode.left != null) {
+                queue.add(currentNode.left);
+                parentMap.put(currentNode.left.val, currentNode);
             }
-            if(p.right!=null)
-            {
-               q.add(p.right);
-               h.put(p.right.val,p);
+
+            if (currentNode.right != null) {
+                queue.add(currentNode.right);
+                parentMap.put(currentNode.right.val, currentNode);
             }
-        }
-        System.out.println(h);
-        HashMap<Integer,Boolean> hash=new HashMap<>();
-       hash.put(org.val,true);
-        Queue<TreeNode> u=new LinkedList<>();
-        u.add(org);
-        int c=0;
-        while(!u.isEmpty())
-        {
-            c++;
-            int n=u.size();
-            for(int i=0;i<n;i++)
-            {
-                TreeNode a=u.poll();
-                
-                if(a.left!=null&&hash.containsKey(a.left.val)==false)
-                {
-                    u.add(a.left);
-                    hash.put(a.left.val,true);
-                    
-                }
-                if(a.right!=null&&hash.containsKey(a.right.val)==false)
-                {
-                      u.add(a.right);
-                      hash.put(a.right.val,true);
-                }
-                if(h.get(a.val)!=null&&hash.containsKey(h.get(a.val).val)==false)
-                {
-                    u.add(h.get(a.val));
-                    hash.put(h.get(a.val).val,true);
-                }
-                
-            }
-            
         }
 
-        return c-1;
+        HashMap<Integer, Boolean> visited = new HashMap<>();
+        visited.put(startNode.val, true);
+
+        Queue<TreeNode> burnQueue = new LinkedList<>();
+        burnQueue.add(startNode);
+
+        int time = 0;
+
+        while (!burnQueue.isEmpty()) {
+
+            int levelSize = burnQueue.size();
+
+            for (int i = 0; i < levelSize; i++) {
+
+                TreeNode currentNode = burnQueue.poll();
+
+                // Left child
+                if (currentNode.left != null &&
+                    !visited.containsKey(currentNode.left.val)) {
+
+                    burnQueue.add(currentNode.left);
+                    visited.put(currentNode.left.val, true);
+                }
+
+                // Right child
+                if (currentNode.right != null &&
+                    !visited.containsKey(currentNode.right.val)) {
+
+                    burnQueue.add(currentNode.right);
+                    visited.put(currentNode.right.val, true);
+                }
+
+                // Parent
+                TreeNode parent = parentMap.get(currentNode.val);
+
+                if (parent != null &&
+                    !visited.containsKey(parent.val)) {
+
+                    burnQueue.add(parent);
+                    visited.put(parent.val, true);
+                }
+            }
+
+            time++;
+        }
+
+        return time - 1;
     }
 }
