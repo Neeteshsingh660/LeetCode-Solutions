@@ -1,11 +1,11 @@
 class Solution {
-    public int findTheCity(int p, int[][] edges, int distanceThreshold) {
-        int n=p;
+    public int findTheCity(int n, int[][] edges, int distanceThreshold) {
+       
        
         int dis[][]=new int[n][n];
         for(int i=0;i<n;i++)
         {
-            for(int j=0;j<p;j++)
+            for(int j=0;j<n;j++)
             {
                 if(i!=j)
                 {
@@ -24,11 +24,11 @@ class Solution {
             dis[b][a]=c;
             
         }
-        for(int k=0;k<p;k++)
+        for(int k=0;k<n;k++)
         {
-            for(int i=0;i<p;i++)
+            for(int i=0;i<n;i++)
             {
-                for(int j=0;j<p;j++)
+                for(int j=0;j<n;j++)
                 {
                     if(dis[i][k]!=Integer.MAX_VALUE&&dis[k][j]!=Integer.MAX_VALUE)
                     {
@@ -39,28 +39,28 @@ class Solution {
                 }
             }
         }
-        int no=0;
-        int min=Integer.MAX_VALUE;
-        for(int i=0;i<p;i++)
+        int leastcount=0;
+        int mincity=Integer.MAX_VALUE;
+        for(int i=0;i<n;i++)
             {
-                int c=0;
-                for(int j=0;j<p;j++)
+                int countcity=0;
+                for(int j=0;j<n;j++)
                 {
                       if(dis[i][j]<=distanceThreshold)
                       {
                       
-                        c++;
+                        countcity++;
                       }
                 }
                
-                if(c<=min)
+                if(countcity<=mincity)
                 {
-                    min=c;
-                    no=i;
+                    mincity=countcity;
+                    leastcount=i;
                 }
             }
             
 
-     return no;
+     return leastcount;
     }
 }
