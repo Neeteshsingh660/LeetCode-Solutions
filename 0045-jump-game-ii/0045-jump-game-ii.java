@@ -14,7 +14,7 @@ class Solution {
         }
         
         jumps++;
-        start=r;
+        start=r+1;
         r=far;
 
 
