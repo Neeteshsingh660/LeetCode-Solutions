@@ -8,17 +8,18 @@ class Solution {
             sum+=cardPoints[l];
         }
         i=k-1;
-        int max=0;
+        int max=sum;
         while(i>=0)
         {
-            max=Math.max(max,sum);
+         
             sum=sum-cardPoints[i];
             sum+=cardPoints[j];
+            max=Math.max(max,sum);
             i--;
             j--;
 
         }
-        max=Math.max(max,sum);
+       
         return max;
     }
 }
